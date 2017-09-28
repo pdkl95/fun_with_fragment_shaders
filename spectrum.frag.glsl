@@ -7,6 +7,11 @@ precision mediump float;
 uniform float time;
 uniform vec2 resolution;
 
+#define ROTATE_SPEED 0.2
+#define MIX_SPEED 1.5
+#define ZOOM 1.2
+
+#define SMOOTHERSTEP(x) ((x) * (x) * (x) * ((x) * ((x) * 6.0 - 15.0) + 10.0))
 
 vec3 bump3y(in vec3 x, in vec3 yoffset)
 {
@@ -39,14 +44,31 @@ vec3 spectral_zucconi6(in float x)
         bump3y(c2 * (x - x2), y2);
 }
 
+vec2 rotate(in vec2 point, in float rads)
+{
+	float cs = cos(rads);
+	float sn = sin(rads);
+	return point * mat2(cs, -sn, sn, cs);
+}
 
 void main( void ) {
 	vec2 position = gl_FragCoord.xy / resolution.xy;
+	vec2 cpos = (position * 2.0) - 1.0;
+	vec2 rpos = rotate(cpos, time * ROTATE_SPEED);
+	rpos *= ZOOM;
+	vec2 rposition = (rpos + 1.0) / 2.0;
 
-	float w = position.x;
-	
-	float period = mod(time, 4.0);
+	float w = (rposition.x + rposition.y) / 2.0;
 
-	vec3 color = (period > 2.0) ? spectral_zucconi(w) : spectral_zucconi6(w);
-	gl_FragColor = vec4(color, 1.0);
+	float period = mod(time * MIX_SPEED, 2.0);
+
+	float reflectperiod = (period > 1.0) ? (2.0 - period) : period;
+
+	vec3 s1 = spectral_zucconi(w);
+	vec3 s2 = spectral_zucconi6(w);
+
+	vec3 color = mix(s1, s2, SMOOTHERSTEP(reflectperiod));
+
+	float alpha = 1.0;
+	gl_FragColor = vec4(color, alpha);
 }
