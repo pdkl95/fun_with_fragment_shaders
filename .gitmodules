@@ -1,0 +1,3 @@
+[submodule "glsl-sandbox"]
+	path = glsl-sandbox
+	url = https://github.com/mrdoob/glsl-sandbox.git
