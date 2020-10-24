@@ -2,7 +2,7 @@
 
 Various GLSL fragment shader programs I've written. View them runing here:
 
-https://pdkl95.github.io/fun_with_fragment_shaders/
+https://pdkl95.github.io/fun_with_fragment_shaders/index.html
 
 ## License
 
