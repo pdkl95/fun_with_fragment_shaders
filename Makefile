@@ -11,7 +11,8 @@ vendorcssdir = $(vendordir)/static/css
 
 VENDOR_CSS_FILES = \
 	codemirror.css \
-	default.css
+	default.css \
+	resizer.png
 
 VENDOR_JS_FILES = \
 	jquery.js \
@@ -51,9 +52,9 @@ $(TARGET_JS): | $(buildjsdir)
 
 $(builddir):
 	mkdir -p $(builddir)
-$(buildcssdir): $(builddir)
+$(buildcssdir): | $(builddir)
 	mkdir -p $(buildcssdir)
-$(buildjsdir): $(builddir)
+$(buildjsdir): | $(builddir)
 	mkdir -p $(buildjsdir)
 
 $(buildcssdir)/%: $(vendorcssdir)/%
