@@ -28,11 +28,14 @@ SHADER_SRC = $(wildcard $(shaderdir)/*.frag.glsl)
 TARGET_VIEWERS = $(patsubst $(shaderdir)/%.frag.glsl,$(builddir)/%.html,$(SHADER_SRC))
 
 VIEWER_TEMPLATE = $(srcdir)/viewer_template.html
+BUILD_INDEX = $(srcdir)/build_index.sh
+TARGET_INDEX = $(builddir)/index.html
 
 TARGETS = \
 	$(TARGET_CSS) \
 	$(TARGET_JS) \
-	$(TARGET_VIEWERS)
+	$(TARGET_VIEWERS) \
+	$(TARGET_INDEX)
 
 
 ######################################################################
@@ -65,6 +68,9 @@ $(buildjsdir)/%: $(vendorjsdir)/%
 $(builddir)/%.html: $(shaderdir)/%.frag.glsl $(VIEWER_TEMPLATE)
 	sed -e '/script id="customShader"/r$<' $(VIEWER_TEMPLATE) > $@
 
+$(TARGET_INDEX): $(SHADER_SRC)
+	$(BUILD_INDEX) $(shaderdir) > $(TARGET_INDEX)
+
 clean-vendor:
 	@for file in $(TARGET_CSS) $(TARGET_JS) ; do \
 	    if test -f $$file ; then \
@@ -87,6 +93,14 @@ clean-viewers:
 	    fi ; \
 	done
 
-clean: clean-vendor clean-viewers
+clean-index:
+	@for file in $(TARGET_INDEX) ; do \
+	    if test -f $$file ; then \
+	        echo "$(RM) $$file" ; \
+	        $(RM) $$file ; \
+	    fi ; \
+	done
 
-.PHONY: all build clean clean-vendor clean-viewers
+clean: clean-vendor clean-viewers clean-index
+
+.PHONY: all build clean clean-vendor clean-viewers clean-index
