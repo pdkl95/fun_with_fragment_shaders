@@ -27,8 +27,8 @@ VENDOR_JS = $(addprefix $(vendorjsdir)/,$(VENDOR_JS_FILES))
 SHADER_SRC = $(wildcard $(shaderdir)/*.frag.glsl)
 TARGET_VIEWERS = $(patsubst $(shaderdir)/%.frag.glsl,$(builddir)/%.html,$(SHADER_SRC))
 
-VIEWER_TEMPLATE = $(srcdir)/viewer_template.html
-BUILD_INDEX = $(srcdir)/build_index.sh
+BUILD_VIEWER = $(srcdir)/build_viewer.sh
+BUILD_INDEX  = $(srcdir)/build_index.sh
 TARGET_INDEX = $(builddir)/index.html
 
 TARGETS = \
@@ -66,7 +66,7 @@ $(buildjsdir)/%: $(vendorjsdir)/%
 	$(CP) $< $@
 
 $(builddir)/%.html: $(shaderdir)/%.frag.glsl $(VIEWER_TEMPLATE)
-	sed -e '/script id="customShader"/r$<' $(VIEWER_TEMPLATE) > $@
+	$(BUILD_VIEWER) $< $@
 
 $(TARGET_INDEX): $(SHADER_SRC)
 	$(BUILD_INDEX) $(shaderdir) > $(TARGET_INDEX)

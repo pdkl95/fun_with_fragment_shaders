@@ -8,7 +8,10 @@ fi
 declare shader_dir="$1"
 
 shader_files() {
-    ls "${shader_dir}" | sort
+    local name
+    for file in "${shader_dir}"/*.frag.glsl ; do
+        basename "${file}"
+    done | sort
 }
 
 shader_index() {
