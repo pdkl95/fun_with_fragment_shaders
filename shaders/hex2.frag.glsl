@@ -121,10 +121,10 @@ float snoise(vec2 v)
   return 130.0 * dot(m, g);
 }
 
-vec2 rand_loc(highp float i,  highp float t)
+vec2 rand_loc(float i, float t)
 {
-	highp float offset = i * 11.0;
-	highp float seed = t + (offset * 200.0);
+	float offset = i * 11.0;
+	float seed = t + (offset * 200.0);
 	
 	return vec2(snoise(vec2(seed, 11.0)),
 		    snoise(vec2(seed, 88.765433)));
@@ -156,7 +156,7 @@ void main( void )
 	
 	float bright = 0.0;
 
-	for (highp float i = 0.0; i < 1.0; i += (1.0/N)) {
+	for (float i = 0.0; i < 1.0; i += (1.0/N)) {
 		float t = time + i;
 		float fadetime = t * FADESPEED;
 		float steptime = floor(fadetime);
