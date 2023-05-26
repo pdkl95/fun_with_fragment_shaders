@@ -135,6 +135,7 @@ bool hit_edge(in float pos)
 	return false;
 }
 
+bool hit_cell(in vec2 position)
 {
 	vec2 driftpos = position + drift;
 	vec2 cell = mod(driftpos, CELLSIZE) / CELLSIZE;

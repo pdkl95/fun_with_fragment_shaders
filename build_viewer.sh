@@ -20,7 +20,7 @@ fix_shader_src() {
     sed -re '
 /#version 330/ d
 /layout.*vec[234] frag_color/ d
-/in vec[234] (position|color)/ d
+/in vec[234] (position|color);/ d
 s/(frag_color)(\s+=.*)/gl_FragColor\2/g
 '
 }
